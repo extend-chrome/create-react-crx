@@ -1,0 +1,39 @@
+{
+  "name": "create-react-crx",
+  "version": "1.0.0",
+  "description": "Setup a modern Chrome extension with one command",
+  "keywords": [
+    "chrome-extension",
+    "web-extension",
+    "rollup",
+    "react",
+    "javascript",
+    "typescript",
+    "boilerplate"
+  ],
+  "homepage": "https://github.com/extend-chrome/create-react-crx#readme",
+  "bugs": {
+    "url": "https://github.com/extend-chrome/create-react-crx/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/extend-chrome/create-react-crx.git"
+  },
+  "license": "MIT",
+  "author": "Jack Steam <jacksteamdev@gmail.com>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "fs-extra": "^9.0.1",
+    "prompts": "^2.4.0",
+    "sort-package-json": "^1.48.0",
+    "validate-npm-package-name": "^3.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.16.0",
+    "prettier": "^2.2.1"
+  },
+  "bin": "index.js"
+}
