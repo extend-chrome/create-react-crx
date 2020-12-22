@@ -75,7 +75,9 @@ prompts([
 
     await exec(`git clone ${repoUrls[lang]} ${name}`)
 
-    const packagePath = path.join(process.cwd(), name, 'package.json')
+    const packageDir = path.join(process.cwd(), name)
+    const packageJsonPath = path.join(packageDir, 'package.json')
+    
     const {
       bugs,
       homepage,
@@ -83,10 +85,10 @@ prompts([
       license,
       repository,
       ...packageJson
-    } = await fs.readJSON(packagePath)
+    } = await fs.readJSON(packageJsonPath)
 
     await fs.writeJSON(
-      packagePath,
+      packageJsonPath,
       sortPackageJson({
         ...packageJson,
         author,
@@ -96,6 +98,9 @@ prompts([
       }),
       { spaces: 2 },
     )
+
+    const gitFolderPath = path.join(packageDir, '.git')
+    await fs.remove(gitFolderPath)
 
     console.log(
       'Success: Now just `npm install` using your favorite package manager and create your Chrome extension!',
