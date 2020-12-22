@@ -1,6 +1,6 @@
 {
   "name": "create-react-crx",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Setup a modern Chrome extension with one command",
   "keywords": [
     "chrome-extension",
