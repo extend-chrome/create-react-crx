@@ -27,9 +27,10 @@
   },
   "dependencies": {
     "fs-extra": "^9.0.1",
+    "lodash.kebabcase": "^4.1.1",
     "prompts": "^2.4.0",
-    "sort-package-json": "^1.48.0",
-    "validate-npm-package-name": "^3.0.0"
+    "sanitize-filename": "^1.6.3",
+    "sort-package-json": "^1.48.0"
   },
   "devDependencies": {
     "eslint": "^7.16.0",

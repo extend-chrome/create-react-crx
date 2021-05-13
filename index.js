@@ -5,8 +5,9 @@ const util = require('util')
 const exec = util.promisify(require('child_process').exec)
 const fs = require('fs-extra')
 const path = require('path')
-const validateNpmPackageName = require('validate-npm-package-name')
 const sortPackageJson = require('sort-package-json')
+const kebabCase = require('lodash.kebabcase')
+const sanitize = require('sanitize-filename')
 
 const repoUrls = {
   js: 'https://github.com/extend-chrome/js-react-boilerplate.git',
@@ -34,12 +35,7 @@ prompts([
     type: 'text',
     name: 'name',
     message: 'Chrome extension package name:',
-    validate: (n) => {
-      if (n.length > 32) return invalidName
-      const { validForNewPackages, errors } = validateNpmPackageName(n)
-      return validForNewPackages || errors.join('\n')
-    },
-    format: (n) => n.replace(/\s/g, '-').toLowerCase(),
+    validate: (n) => n.length < 32 || invalidName,
   },
   {
     type: 'text',
@@ -71,31 +67,34 @@ prompts([
   },
 ])
   .then(async ({ lang, author, description, name, version }) => {
-    console.log(`Creating a Chrome extension in ./${name}`)
+    const packageName = kebabCase(sanitize(name, { replacement: '-' }))
 
-    await exec(`git clone ${repoUrls[lang]} ${name}`)
+    console.log(`Creating a Chrome extension in ./${packageName}`)
 
-    const packageDir = path.join(process.cwd(), name)
+    await exec(`git clone ${repoUrls[lang]} ${packageName}`)
+
+    const packageDir = path.join(process.cwd(), packageName)
+
     const packageJsonPath = path.join(packageDir, 'package.json')
-    
-    const {
-      bugs,
-      homepage,
-      keywords,
-      license,
-      repository,
-      ...packageJson
-    } = await fs.readJSON(packageJsonPath)
-
+    const { bugs, homepage, keywords, license, repository, ...packageJson } =
+      await fs.readJSON(packageJsonPath)
     await fs.writeJSON(
       packageJsonPath,
       sortPackageJson({
         ...packageJson,
         author,
         description,
-        name,
+        name: packageName,
         version,
       }),
+      { spaces: 2 },
+    )
+
+    const manifestJsonPath = path.join(packageDir, 'src', 'manifest.json')
+    const manifestJson = await fs.readJSON(manifestJsonPath)
+    await fs.writeJSON(
+      manifestJsonPath,
+      { ...manifestJson, name },
       { spaces: 2 },
     )
 
@@ -106,4 +105,7 @@ prompts([
       'Success: Now just `npm install` using your favorite package manager and create your Chrome extension!',
     )
   })
-  .catch(console.error)
+  .catch((error) => {
+    console.error(error)
+    process.exit(1)
+  })
