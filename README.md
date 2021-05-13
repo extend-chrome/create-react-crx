@@ -4,7 +4,7 @@ Setup a modern Chrome extension with one command.
 
 This CLI will clone a boilerplate for a Chrome extension that uses [Rollup](https://rollupjs.org/guide/en/) and [rollup-plugin-chrome-extension](https://www.extend-chrome.dev/rollup-plugin) for a modern development experience. 
 
-Features include React/JSX, ES modules, and automatic reloading out of the box. You can choose either JavaScript or TypeScript.
+Features include **React/JSX**, **ES modules**, and **automatic reloading** out of the box. You can choose either **JavaScript** or **TypeScript**.
 
 ## Instructions
 
